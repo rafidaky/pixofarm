@@ -12,10 +12,6 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
-  map: {
-    width: '100%',
-    flex: 1,
-  },
 });
 
 export default styles;

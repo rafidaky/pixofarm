@@ -7,7 +7,11 @@ const homeNavigator = () => {
 
   return (
     <Stack.Navigator initialRouteName="MapScreen">
-      <Stack.Screen name="MapScreen" component={MapScreen} />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="MapScreen"
+        component={MapScreen}
+      />
     </Stack.Navigator>
   );
 };
