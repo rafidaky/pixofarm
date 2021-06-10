@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Platform, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,33 +16,63 @@ const CameraScreen = props => {
   const [localPicture, setLocalPicture] = useState(pictures);
 
   const askPermission = () => {
-    check(PERMISSIONS.IOS.CAMERA)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            request(PERMISSIONS.IOS.CAMERA).then(result => {});
-            break;
-          case RESULTS.DENIED:
-            request(PERMISSIONS.IOS.CAMERA)
-              .then(result => {})
-              .catch(err => {
-                console.log(err);
+    if (Platform.OS == 'ios') {
+      check(PERMISSIONS.IOS.CAMERA)
+        .then(result => {
+          switch (result) {
+            case RESULTS.UNAVAILABLE:
+              request(PERMISSIONS.IOS.CAMERA).then(result => {});
+              break;
+            case RESULTS.DENIED:
+              request(PERMISSIONS.IOS.CAMERA)
+                .then(result => {})
+                .catch(err => {
+                  console.log(err);
+                });
+              break;
+            case RESULTS.LIMITED:
+              request(PERMISSIONS.IOS.CAMERA).then(result => {
+                console.log(result);
               });
-            break;
-          case RESULTS.LIMITED:
-            request(PERMISSIONS.IOS.CAMERA).then(result => {
-              console.log(result);
-            });
-            break;
-          case RESULTS.GRANTED:
-            break;
-          case RESULTS.BLOCKED:
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+              break;
+            case RESULTS.GRANTED:
+              break;
+            case RESULTS.BLOCKED:
+              break;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      check(PERMISSIONS.ANDROID.CAMERA)
+        .then(result => {
+          switch (result) {
+            case RESULTS.UNAVAILABLE:
+              request(PERMISSIONS.ANDROID.CAMERA).then(result => {});
+              break;
+            case RESULTS.DENIED:
+              request(PERMISSIONS.ANDROID.CAMERA)
+                .then(result => {})
+                .catch(err => {
+                  console.log(err);
+                });
+              break;
+            case RESULTS.LIMITED:
+              request(PERMISSIONS.ANDROID.CAMERA).then(result => {
+                console.log(result);
+              });
+              break;
+            case RESULTS.GRANTED:
+              break;
+            case RESULTS.BLOCKED:
+              break;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -51,7 +81,7 @@ const CameraScreen = props => {
 
   const cameraRef = useRef();
 
-  const storeData = async (pictures) => {
+  const storeData = async pictures => {
     try {
       await AsyncStorage.setItem(
         'pictures',
@@ -80,7 +110,7 @@ const CameraScreen = props => {
         ref={cameraRef}
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.on}
+        flashMode={RNCamera.Constants.FlashMode.off}
         androidCameraPermissionOptions={{
           title: 'Permission to use camera',
           message: 'We need your permission to use your camera',
