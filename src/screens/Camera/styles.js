@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   buttonText: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: 'Poppins-Light',
   },
 });
