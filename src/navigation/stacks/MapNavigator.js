@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import MapScreen from '../../screens/MapScreen';
+import CameraScreen from '../../screens/Camera';
 
 const homeNavigator = () => {
   const Stack = createStackNavigator();
@@ -11,6 +12,11 @@ const homeNavigator = () => {
         options={{headerShown: false}}
         name="MapScreen"
         component={MapScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="CameraScreen"
+        component={CameraScreen}
       />
     </Stack.Navigator>
   );

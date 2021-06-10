@@ -18,3 +18,9 @@ export const addToClickedLocations = location => {
     payload: location,
   };
 };
+export const addToPictures = picture => {
+  return {
+    type: 'ADD_TO_PICTURES',
+    payload: picture,
+  };
+};

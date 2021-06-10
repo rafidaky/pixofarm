@@ -38,10 +38,6 @@ const MapScreen = () => {
       .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
-            console
-              .log
-              // 'This feature is not available (on this device / in this context)',
-              ();
             request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
               getCoordinates();
             });
@@ -54,24 +50,17 @@ const MapScreen = () => {
               .catch(err => {
                 console.log(err);
               });
-            console
-              .log
-              // 'The permission has not been requested / is denied but requestable',
-              ();
             break;
           case RESULTS.LIMITED:
-            // console.log('The permission is limited: some actions are possible');
             request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
               console.log(result);
               getCoordinates();
             });
             break;
           case RESULTS.GRANTED:
-            // console.log('The permission is granted');
             getCoordinates();
             break;
           case RESULTS.BLOCKED:
-            // console.log('The permission is denied and not requestable anymore');
             break;
         }
       })
@@ -88,8 +77,8 @@ const MapScreen = () => {
     <SafeAreaView style={styles.container}>
       <MapView
         onPress={e => {
-          console.log(e.nativeEvent);
           dispatch(addToClickedLocations(e.nativeEvent.coordinate));
+          navigation.push('CameraScreen');
         }}
         provider={PROVIDER_GOOGLE}
         style={styles.map}

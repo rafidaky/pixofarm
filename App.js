@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {LogBox, StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 
 const App = () => {
   LogBox.ignoreAllLogs(true);
-  
+
   const middleware = [thunk];
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

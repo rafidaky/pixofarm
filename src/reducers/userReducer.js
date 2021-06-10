@@ -1,6 +1,7 @@
 const initialState = {
   coordinates: {lat: '', lng: ''},
   clickedLocations: [],
+  pictures: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         clickedLocations: [...state.clickedLocations, action.payload],
+      };
+    case 'ADD_TO_PICTURES':
+      return {
+        ...state,
+        pictures: [...state.pictures, action.payload],
       };
     default:
       return state;
