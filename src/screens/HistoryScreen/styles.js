@@ -3,15 +3,14 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
+    height: '100%',
     backgroundColor: 'white',
     alignItems: 'center',
   },
   wrapper: {
     paddingHorizontal: 24,
     width: '100%',
-    height: '100%',
-    flex: 1,
+    flexGrow: 1,
   },
   image: {
     width: '40%',
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
   },
   historyContainer: {
     width: '100%',
-    height: '25%',
+    height: 150,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 20,
+    marginVertical: 20,
   },
   buttonText: {
     color: 'white',

@@ -10,7 +10,7 @@ const tabNavigator = () => {
   const isLoggedIn = useSelector(state => state.loggedIn);
 
   return isLoggedIn === false ? (
-    <Tab.Navigator screenOptions={{unmountOnBlur: true}}>
+    <Tab.Navigator>
       <Tab.Screen
         options={{tabBarVisible: false}}
         name="AuthNavigator"
@@ -18,7 +18,7 @@ const tabNavigator = () => {
       />
     </Tab.Navigator>
   ) : (
-    <Tab.Navigator screenOptions={{unmountOnBlur: true}}>
+    <Tab.Navigator>
       <Tab.Screen name="MapNavigator" component={MapNavigator} />
       <Tab.Screen name="HistoryNavigator" component={HistoryNavigator} />
     </Tab.Navigator>

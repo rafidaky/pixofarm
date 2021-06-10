@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,27 +10,39 @@ import {
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/core';
 
 const HistoryScreen = () => {
   const pictures = useSelector(state => state.userReducer.pictures);
+  const navigation = useNavigation();
+
+  const [dynamicPics, setDynamicPics] = useState(pictures);
 
   useEffect(() => {
-    pictures.sort(function (a, b) {
-      return new Date(b.takenTime) - new Date(a.takenTime);
+    const unsubscribe = navigation.addListener('focus', () => {
+      let temp = [...pictures];
+      temp.sort(function (a, b) {
+        return new Date(b.takenTime) - new Date(a.takenTime);
+      });
+      temp.map(item => {
+        axios
+          .get('http://api.weatherbit.io/v2.0/current', {
+            params: {
+              key: '29b4d4d9708f45beae17ebe668dfa6f9',
+              lat: item.coords.latitude,
+              lon: item.coords.longitude,
+            },
+          })
+          .then(resp => {
+            item.temp = resp.data.data[0].temp;
+          });
+      });
+      setTimeout(() => {
+        setDynamicPics(temp);
+      }, 1500);
     });
-    pictures.map(item => {
-      axios
-        .get('http://api.weatherbit.io/v2.0/current', {
-          params: {
-            key: '29b4d4d9708f45beae17ebe668dfa6f9',
-            lat: item.coords.latitude,
-            lon: item.coords.longitude,
-          },
-        })
-        .then(resp => {
-          item.temp = resp.data.data[0].temp;
-        });
-    });
+
+    return unsubscribe;
   }, []);
 
   const sync = () => {
@@ -46,12 +58,8 @@ const HistoryScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        style={styles.wrapper}>
-        {pictures.map(item => {
+      <ScrollView style={styles.wrapper}>
+        {dynamicPics.map(item => {
           return (
             <View style={styles.historyContainer}>
               <Image
@@ -61,7 +69,9 @@ const HistoryScreen = () => {
                 <Text style={styles.dateText}>
                   {new Date(item.takenTime).toLocaleString()}
                 </Text>
-                <Text style={styles.dateText}>{'Temp: ' + item.temp}</Text>
+                <Text style={styles.dateText}>
+                  {'Temp: ' + (item.temp ? item.temp : '')}
+                </Text>
               </View>
             </View>
           );

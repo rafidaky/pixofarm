@@ -53,6 +53,9 @@ const MapScreen = () => {
             getCoordinates();
             break;
           case RESULTS.BLOCKED:
+            request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
+              getCoordinates();
+            });
             break;
         }
       })
