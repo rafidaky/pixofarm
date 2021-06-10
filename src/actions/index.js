@@ -24,3 +24,9 @@ export const addToPictures = picture => {
     payload: picture,
   };
 };
+export const setPictures = pictures => {
+  return {
+    type: 'SET_PICTURES',
+    payload: pictures,
+  };
+};

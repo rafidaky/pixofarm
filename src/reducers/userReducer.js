@@ -21,6 +21,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         pictures: [...state.pictures, action.payload],
       };
+    case 'SET_PICTURES':
+      return {
+        ...state,
+        pictures: action.payload,
+      };
     default:
       return state;
   }

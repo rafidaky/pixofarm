@@ -1,23 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import {RNCamera} from 'react-native-camera';
-import {layout} from '../../theme/layout';
 import {addToPictures} from '../../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CameraScreen = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const pictures = useSelector(state => state.userReducer.pictures);
+
+  const [localPicture, setLocalPicture] = useState(pictures);
 
   const askPermission = () => {
     check(PERMISSIONS.IOS.CAMERA)
@@ -39,7 +35,6 @@ const CameraScreen = props => {
             });
             break;
           case RESULTS.GRANTED:
-            getCoordinates();
             break;
           case RESULTS.BLOCKED:
             break;
@@ -56,10 +51,25 @@ const CameraScreen = props => {
 
   const cameraRef = useRef();
 
+  const storeData = async (pictures) => {
+    try {
+      await AsyncStorage.setItem(
+        'pictures',
+        JSON.stringify({pictures: pictures}),
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const takePicture = async () => {
     if (cameraRef) {
-      const data = await cameraRef.current.takePictureAsync();
+      let data = await cameraRef.current.takePictureAsync();
+      data.takenTime = new Date();
+      data.coords = props.route.params.coords;
       dispatch(addToPictures(data));
+      let temp = [...localPicture];
+      temp.push(data);
+      storeData(temp);
       navigation.pop();
     }
   };

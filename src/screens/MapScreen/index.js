@@ -1,12 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {SafeAreaView} from 'react-native';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -53,7 +46,6 @@ const MapScreen = () => {
             break;
           case RESULTS.LIMITED:
             request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
-              console.log(result);
               getCoordinates();
             });
             break;
@@ -78,7 +70,7 @@ const MapScreen = () => {
       <MapView
         onPress={e => {
           dispatch(addToClickedLocations(e.nativeEvent.coordinate));
-          navigation.push('CameraScreen');
+          navigation.push('CameraScreen', {coords: e.nativeEvent.coordinate});
         }}
         provider={PROVIDER_GOOGLE}
         style={styles.map}

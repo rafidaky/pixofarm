@@ -2,12 +2,18 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import MapScreen from '../../screens/MapScreen';
 import CameraScreen from '../../screens/Camera';
+import OnLoad from '../../screens/OnLoad';
 
-const homeNavigator = () => {
+const MapNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="MapScreen">
+    <Stack.Navigator initialRouteName="OnLoad">
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OnLoad"
+        component={OnLoad}
+      />
       <Stack.Screen
         options={{headerShown: false}}
         name="MapScreen"
@@ -21,4 +27,4 @@ const homeNavigator = () => {
     </Stack.Navigator>
   );
 };
-export default homeNavigator;
+export default MapNavigator;
