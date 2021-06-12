@@ -24,9 +24,15 @@ export const addToPictures = picture => {
     payload: picture,
   };
 };
+
 export const setPictures = pictures => {
-  return {
-    type: 'SET_PICTURES',
-    payload: pictures,
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      dispatch({
+        type: 'SET_PICTURES',
+        payload: pictures,
+      });
+      resolve();
+    });
   };
 };

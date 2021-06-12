@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {setPictures} from '../../actions';
@@ -15,9 +14,7 @@ const OnLoad = () => {
       if (pictures !== null) {
         let oldPics = JSON.parse(pictures).pictures;
         dispatch(setPictures(oldPics));
-        setTimeout(() => {
-          navigation.push('MapScreen');
-        }, 2000);
+        navigation.push('MapScreen');
       } else {
         navigation.push('MapScreen');
       }

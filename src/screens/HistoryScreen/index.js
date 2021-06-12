@@ -10,46 +10,36 @@ import {
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/core';
 
 const HistoryScreen = () => {
   const pictures = useSelector(state => state.userReducer.pictures);
-  console.log(pictures);
-
-  const navigation = useNavigation();
 
   const [dynamicPics, setDynamicPics] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      setDynamicPics([]);
-      setTimeout(() => {
-        let temp = [...pictures];
-        temp.sort(function (a, b) {
-          return new Date(b.takenTime) - new Date(a.takenTime);
-        });
-        temp.map(item => {
-          axios
-            .get('http://api.weatherbit.io/v2.0/current', {
-              params: {
-                key: '29b4d4d9708f45beae17ebe668dfa6f9',
-                lat: item.coords.latitude,
-                lon: item.coords.longitude,
-              },
-            })
-            .then(resp => {
-              item.temp = resp.data.data[0].temp;
-            });
-        });
-        setDynamicPics(temp);
-        setTimeout(() => {
-          setDynamicPics(temp);
-        }, 1000);
-      }, 2000);
+    setDynamicPics([]);
+    let temp = [...pictures];
+    temp.sort(function (a, b) {
+      return new Date(b.takenTime) - new Date(a.takenTime);
     });
-
-    return unsubscribe;
-  }, []);
+    temp.map(item => {
+      axios
+        .get('http://api.weatherbit.io/v2.0/current', {
+          params: {
+            key: '29b4d4d9708f45beae17ebe668dfa6f9',
+            lat: item.coords.latitude,
+            lon: item.coords.longitude,
+          },
+        })
+        .then(resp => {
+          item.temp = resp.data.data[0].temp;
+        });
+    });
+    setDynamicPics(temp);
+    setTimeout(() => {
+      setDynamicPics(temp);
+    }, 1000);
+  }, [pictures]);
 
   const sync = () => {
     axios
